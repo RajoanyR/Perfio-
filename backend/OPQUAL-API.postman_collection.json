@@ -1,0 +1,2065 @@
+{
+  "info": {
+    "name": "OPQUAL API",
+    "_postman_id": "opqual-backend-final",
+    "description": "Collection générée à partir des contrôleurs réellement présents dans le backend. Le login est public; toutes les autres routes utilisent Bearer JWT.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "id_utilisateur",
+      "value": "1"
+    },
+    {
+      "key": "id_projet",
+      "value": "1"
+    },
+    {
+      "key": "id_tache",
+      "value": "1"
+    },
+    {
+      "key": "id_equipe",
+      "value": "1"
+    },
+    {
+      "key": "id_session",
+      "value": "1"
+    },
+    {
+      "key": "id_entreprise",
+      "value": "1"
+    },
+    {
+      "key": "id_role",
+      "value": "1"
+    },
+    {
+      "key": "id_permission",
+      "value": "1"
+    },
+    {
+      "key": "id_commentaire",
+      "value": "1"
+    },
+    {
+      "key": "id_notification",
+      "value": "1"
+    },
+    {
+      "key": "id_rapport",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "GET /taches/{{id_tache}}/activites",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/activites",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "activites"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /taches/{{id_tache}}/activites",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/activites",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "activites"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_utilisateur\": \"{{id_utilisateur}}\",\n  \"temps_passe\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "GET /",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": []
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /auth/login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"test@example.com\",\n  \"mot_de_passe\": \"VotreMotDePasse\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json.access_token) pm.collectionVariables.set('access_token', json.access_token);",
+              "if (json.id_session) pm.collectionVariables.set('id_session', json.id_session);",
+              "if (json.id_utilisateur) pm.collectionVariables.set('id_utilisateur', json.id_utilisateur);",
+              "if (json.id_role) pm.collectionVariables.set('id_role', json.id_role);",
+              "if (json.id_equipe) pm.collectionVariables.set('id_equipe', json.id_equipe);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /auth/logout",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/auth/logout",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "logout"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /taches/{{id_tache}}/commentaires",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/commentaires",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "commentaires"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /taches/{{id_tache}}/commentaires",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/commentaires",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "commentaires"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_utilisateur\": \"{{id_utilisateur}}\",\n  \"contenu\": \"Commentaire test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "PATCH /taches/commentaires/{{id_commentaire}}",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/taches/commentaires/{{id_commentaire}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "commentaires",
+            "{{id_commentaire}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"contenu\": \"Commentaire modifié\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "GET /entreprises",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/entreprises",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "entreprises"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /entreprises/{{id_entreprise}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/entreprises/{{id_entreprise}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "entreprises",
+            "{{id_entreprise}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /entreprises",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/entreprises",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "entreprises"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nom\": \"Entreprise Test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "PATCH /entreprises/{{id_entreprise}}",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/entreprises/{{id_entreprise}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "entreprises",
+            "{{id_entreprise}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /equipes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/equipes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "equipes"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /equipes/{{id_equipe}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/equipes/{{id_equipe}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "equipes",
+            "{{id_equipe}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /equipes/{{id_equipe}}/utilisateurs",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/equipes/{{id_equipe}}/utilisateurs",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "equipes",
+            "{{id_equipe}}",
+            "utilisateurs"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /equipes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/equipes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "equipes"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nom_equipe\": \"Equipe Test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "PATCH /equipes/{{id_equipe}}",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/equipes/{{id_equipe}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "equipes",
+            "{{id_equipe}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /taches/{{id_tache}}/historique",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/historique",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "historique"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /taches/{{id_tache}}/historique",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/historique",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "historique"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_utilisateur\": \"{{id_utilisateur}}\",\n  \"action\": \"TEST\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "GET /notifications/utilisateur/{{id_utilisateur}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/notifications/utilisateur/{{id_utilisateur}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "utilisateur",
+            "{{id_utilisateur}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /notifications",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/notifications",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_utilisateur\": \"{{id_utilisateur}}\",\n  \"type\": \"INFO\",\n  \"message\": \"Notification test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "PATCH /notifications/{{id_notification}}/lire",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{id_notification}}/lire",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{id_notification}}",
+            "lire"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "PATCH /notifications/{{id_notification}}/non-lire",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/notifications/{{id_notification}}/non-lire",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "notifications",
+            "{{id_notification}}",
+            "non-lire"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /projets/{{id_projet}}/participants",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/projets/{{id_projet}}/participants",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "projets",
+            "{{id_projet}}",
+            "participants"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /projets/{{id_projet}}/participants",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/projets/{{id_projet}}/participants",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "projets",
+            "{{id_projet}}",
+            "participants"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_utilisateur\": \"{{id_utilisateur}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "PATCH /projets/{{id_projet}}/participants/{{id_utilisateur}}",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/projets/{{id_projet}}/participants/{{id_utilisateur}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "projets",
+            "{{id_projet}}",
+            "participants",
+            "{{id_utilisateur}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /permissions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/permissions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "permissions"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /permissions/{{id_permission}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/permissions/{{id_permission}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "permissions",
+            "{{id_permission}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /permissions",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/permissions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "permissions"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code_permission\": \"EXEMPLE_CODE\",\n  \"nom_permission\": \"Permission exemple\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "PATCH /permissions/{{id_permission}}",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/permissions/{{id_permission}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "permissions",
+            "{{id_permission}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /taches/{{id_tache}}/pieces-jointes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/pieces-jointes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "pieces-jointes"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /taches/{{id_tache}}/pieces-jointes",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/pieces-jointes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "pieces-jointes"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_utilisateur\": \"{{id_utilisateur}}\",\n  \"nom_fichier\": \"test.txt\",\n  \"chemin_fichier\": \"uploads/test.txt\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "GET /taches/commentaires/{{id_commentaire}}/pieces-jointes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches/commentaires/{{id_commentaire}}/pieces-jointes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "commentaires",
+            "{{id_commentaire}}",
+            "pieces-jointes"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /projets",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/projets",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "projets"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_equipe\": \"{{id_equipe}}\",\n  \"id_chef_projet\": \"{{id_utilisateur}}\",\n  \"nom_projet\": \"Projet Test\",\n  \"code_projet\": \"PRJ-TEST\",\n  \"date_debut\": \"2026-09-29\",\n  \"date_fin_prevue\": \"2026-10-29\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "GET /projets",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/projets",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "projets"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /projets/{{id_projet}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/projets/{{id_projet}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "projets",
+            "{{id_projet}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "PATCH /projets/{{id_projet}}",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/projets/{{id_projet}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "projets",
+            "{{id_projet}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /rapports",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/rapports",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "rapports"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /rapports/utilisateur/{{id_utilisateur}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/rapports/utilisateur/{{id_utilisateur}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "rapports",
+            "utilisateur",
+            "{{id_utilisateur}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /rapports/{{id_rapport}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/rapports/{{id_rapport}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "rapports",
+            "{{id_rapport}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /rapports",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/rapports",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "rapports"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_utilisateur\": \"{{id_utilisateur}}\",\n  \"type\": \"ACTIVITE\",\n  \"format\": \"PDF\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "GET /roles/{{id_role}}/permissions",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/roles/{{id_role}}/permissions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "roles",
+            "{{id_role}}",
+            "permissions"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /roles/{{id_role}}/permissions",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/roles/{{id_role}}/permissions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "roles",
+            "{{id_role}}",
+            "permissions"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_permission\": \"{{id_permission}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "DELETE /roles/{{id_role}}/permissions/{{id_permission}}",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/roles/{{id_role}}/permissions/{{id_permission}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "roles",
+            "{{id_role}}",
+            "permissions",
+            "{{id_permission}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /roles",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/roles",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "roles"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /roles/{{id_role}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/roles/{{id_role}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "roles",
+            "{{id_role}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /roles",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/roles",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "roles"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nom_role\": \"role_test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "PATCH /roles/{{id_role}}",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/roles/{{id_role}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "roles",
+            "{{id_role}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /sessions/utilisateur/{{id_utilisateur}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/sessions/utilisateur/{{id_utilisateur}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "sessions",
+            "utilisateur",
+            "{{id_utilisateur}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "PATCH /sessions/{{id_session}}/fermer",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/sessions/{{id_session}}/fermer",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "sessions",
+            "{{id_session}}",
+            "fermer"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /taches",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/taches",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_projet\": \"{{id_projet}}\",\n  \"id_responsable\": \"{{id_utilisateur}}\",\n  \"id_equipe\": \"{{id_equipe}}\",\n  \"titre\": \"Tâche Test\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "GET /taches",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /taches/{{id_tache}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "PATCH /taches/{{id_tache}}",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "PATCH /taches/{{id_tache}}/etat",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/etat",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "etat"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "PATCH /taches/{{id_tache}}/terminer",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/terminer",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "terminer"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /taches/{{id_tache}}/transfert",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/transfert",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "transfert"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nouveau_responsable\": \"{{id_utilisateur}}\",\n  \"nouvelle_equipe\": \"{{id_equipe}}\",\n  \"motif\": \"Réaffectation\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "GET /taches/{{id_tache}}/transferts",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/taches/{{id_tache}}/transferts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "taches",
+            "{{id_tache}}",
+            "transferts"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /utilisateurs",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/utilisateurs",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "utilisateurs"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "GET /utilisateurs/{{id_utilisateur}}",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/utilisateurs/{{id_utilisateur}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "utilisateurs",
+            "{{id_utilisateur}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST /utilisateurs",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/utilisateurs",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "utilisateurs"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id_entreprise\": \"{{id_entreprise}}\",\n  \"id_role\": \"{{id_role}}\",\n  \"id_equipe\": \"{{id_equipe}}\",\n  \"nom\": \"Nom\",\n  \"prenom\": \"Prenom\",\n  \"email\": \"nouveau@example.com\",\n  \"mot_de_passe\": \"MotDePasse123!\",\n  \"poste\": \"Collaborateur\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "PATCH /utilisateurs/{{id_utilisateur}}",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/utilisateurs/{{id_utilisateur}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "utilisateurs",
+            "{{id_utilisateur}}"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "PATCH /utilisateurs/{{id_utilisateur}}/desactiver",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/utilisateurs/{{id_utilisateur}}/desactiver",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "utilisateurs",
+            "{{id_utilisateur}}",
+            "desactiver"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "PATCH /utilisateurs/{{id_utilisateur}}/activer",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/utilisateurs/{{id_utilisateur}}/activer",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "utilisateurs",
+            "{{id_utilisateur}}",
+            "activer"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

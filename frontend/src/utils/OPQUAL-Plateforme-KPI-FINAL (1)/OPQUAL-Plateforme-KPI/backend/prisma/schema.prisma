@@ -1,0 +1,316 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["partialIndexes"]
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["construct"]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model activite {
+  id_activite    BigInt      @id(map: "pk_activite") @default(autoincrement())
+  id_tache       BigInt
+  id_utilisateur BigInt
+  description    String?
+  temps_passe    Decimal     @db.Decimal(8, 2)
+  date_activite  DateTime    @default(now()) @db.Timestamptz(6)
+  tache          tache       @relation(fields: [id_tache], references: [id_tache], onDelete: Cascade, onUpdate: NoAction, map: "fk_activite_1")
+  utilisateur    utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onUpdate: NoAction, map: "fk_activite_2")
+
+  @@index([id_tache, date_activite], map: "idx_activite_tache_date")
+  @@index([id_utilisateur, date_activite], map: "idx_activite_user_date")
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model commentaire {
+  id_commentaire    BigInt         @id(map: "pk_commentaire") @default(autoincrement())
+  id_tache          BigInt
+  id_utilisateur    BigInt
+  contenu           String
+  date_creation     DateTime       @default(now()) @db.Timestamptz(6)
+  date_modification DateTime?      @db.Timestamptz(6)
+  statut            String         @default("ACTIF") @db.VarChar(20)
+  tache             tache          @relation(fields: [id_tache], references: [id_tache], onDelete: Cascade, onUpdate: NoAction, map: "fk_commentaire_1")
+  utilisateur       utilisateur    @relation(fields: [id_utilisateur], references: [id_utilisateur], onUpdate: NoAction, map: "fk_commentaire_2")
+  piece_jointe      piece_jointe[]
+
+  @@index([id_tache, date_creation], map: "idx_commentaire_tache_date")
+  @@schema("construct")
+}
+
+model entreprise {
+  id_entreprise          BigInt        @id(map: "pk_entreprise") @default(autoincrement())
+  nom                    String        @unique(map: "uq_entreprise_nom") @db.VarChar(150)
+  logo                   String?       @db.VarChar(255)
+  adresse                String?       @db.VarChar(255)
+  email                  String?       @db.VarChar(150)
+  telephone              String?       @db.VarChar(30)
+  informations_generales String?
+  date_creation          DateTime      @default(now()) @db.Timestamptz(6)
+  utilisateur            utilisateur[]
+
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model equipe {
+  id_equipe                                               BigInt            @id(map: "pk_equipe") @default(autoincrement())
+  nom_equipe                                              String            @unique @db.VarChar(100)
+  description                                             String?
+  statut                                                  String            @default("ACTIVE") @db.VarChar(20)
+  date_creation                                           DateTime          @default(now()) @db.Timestamptz(6)
+  projet                                                  projet[]
+  tache                                                   tache[]
+  transfert_tache_transfert_tache_ancienne_equipeToequipe transfert_tache[] @relation("transfert_tache_ancienne_equipeToequipe")
+  transfert_tache_transfert_tache_nouvelle_equipeToequipe transfert_tache[] @relation("transfert_tache_nouvelle_equipeToequipe")
+  utilisateur                                             utilisateur[]
+
+  @@schema("construct")
+}
+
+model historique_tache {
+  id_historique  BigInt       @id(map: "pk_historique_tache") @default(autoincrement())
+  id_tache       BigInt
+  id_utilisateur BigInt?
+  action         String       @db.VarChar(100)
+  description    String?
+  date_action    DateTime     @default(now()) @db.Timestamptz(6)
+  tache          tache        @relation(fields: [id_tache], references: [id_tache], onDelete: Cascade, onUpdate: NoAction, map: "fk_historique_tache_1")
+  utilisateur    utilisateur? @relation(fields: [id_utilisateur], references: [id_utilisateur], onUpdate: NoAction, map: "fk_historique_tache_2")
+
+  @@index([id_tache, date_action], map: "idx_historique_tache_date")
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model notification {
+  id_notification BigInt      @id(map: "pk_notification") @default(autoincrement())
+  id_utilisateur  BigInt
+  type            String      @db.VarChar(50)
+  message         String
+  est_lue         Boolean     @default(false)
+  date_creation   DateTime    @default(now()) @db.Timestamptz(6)
+  date_lecture    DateTime?   @db.Timestamptz(6)
+  utilisateur     utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade, onUpdate: NoAction, map: "fk_notification_1")
+
+  @@index([id_utilisateur, date_creation(sort: Desc)], map: "idx_notification_non_lue", where: raw("(est_lue = false)"))
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model participation_projet {
+  id_projet          BigInt
+  id_utilisateur     BigInt
+  date_participation DateTime    @default(now()) @db.Timestamptz(6)
+  statut             String      @default("ACTIF") @db.VarChar(20)
+  projet             projet      @relation(fields: [id_projet], references: [id_projet], onDelete: Cascade, onUpdate: NoAction, map: "fk_participation_projet_1")
+  utilisateur        utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onUpdate: NoAction, map: "fk_participation_projet_2")
+
+  @@id([id_projet, id_utilisateur], map: "pk_participation_projet")
+  @@index([id_utilisateur], map: "idx_participation_utilisateur")
+  @@schema("construct")
+}
+
+model permission {
+  id_permission   BigInt            @id(map: "pk_permission") @default(autoincrement())
+  code_permission String            @unique(map: "uq_permission_code_permission") @db.VarChar(100)
+  nom_permission  String            @db.VarChar(100)
+  description     String?
+  role_permission role_permission[]
+
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model piece_jointe {
+  id_piece_jointe BigInt       @id(map: "pk_piece_jointe") @default(autoincrement())
+  id_tache        BigInt?
+  id_commentaire  BigInt?
+  id_utilisateur  BigInt
+  nom_fichier     String       @db.VarChar(255)
+  chemin_fichier  String       @db.VarChar(500)
+  type_fichier    String?      @db.VarChar(100)
+  taille          BigInt?
+  date_ajout      DateTime     @default(now()) @db.Timestamptz(6)
+  tache           tache?       @relation(fields: [id_tache], references: [id_tache], onDelete: Cascade, onUpdate: NoAction, map: "fk_piece_jointe_1")
+  commentaire     commentaire? @relation(fields: [id_commentaire], references: [id_commentaire], onDelete: Cascade, onUpdate: NoAction, map: "fk_piece_jointe_2")
+  utilisateur     utilisateur  @relation(fields: [id_utilisateur], references: [id_utilisateur], onUpdate: NoAction, map: "fk_piece_jointe_3")
+
+  @@index([id_commentaire], map: "idx_piece_commentaire", where: raw("(id_commentaire IS NOT NULL)"))
+  @@index([id_tache], map: "idx_piece_tache", where: raw("(id_tache IS NOT NULL)"))
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model projet {
+  id_projet            BigInt                 @id(map: "pk_projet") @default(autoincrement())
+  id_equipe            BigInt
+  id_chef_projet       BigInt
+  nom_projet           String                 @db.VarChar(150)
+  code_projet          String                 @unique(map: "uq_projet_code_projet") @db.VarChar(50)
+  description          String?
+  priorite             String                 @default("NORMALE") @db.VarChar(20)
+  etat                 String                 @default("PLANIFIE") @db.VarChar(30)
+  date_debut           DateTime               @db.Date
+  date_fin_prevue      DateTime               @db.Date
+  date_fin_reelle      DateTime?              @db.Date
+  statut               String                 @default("ACTIF") @db.VarChar(20)
+  date_creation        DateTime               @default(now()) @db.Timestamptz(6)
+  participation_projet participation_projet[]
+  equipe               equipe                 @relation(fields: [id_equipe], references: [id_equipe], onUpdate: NoAction, map: "fk_projet_1")
+  utilisateur          utilisateur            @relation(fields: [id_chef_projet], references: [id_utilisateur], onUpdate: NoAction, map: "fk_projet_2")
+  tache                tache[]
+
+  @@index([id_chef_projet], map: "idx_projet_chef")
+  @@index([id_equipe], map: "idx_projet_equipe")
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model rapport {
+  id_rapport      BigInt      @id(map: "pk_rapport") @default(autoincrement())
+  id_utilisateur  BigInt
+  type            String      @db.VarChar(50)
+  format          String      @db.VarChar(10)
+  periode_debut   DateTime?   @db.Date
+  periode_fin     DateTime?   @db.Date
+  chemin_fichier  String?     @db.VarChar(500)
+  date_generation DateTime    @default(now()) @db.Timestamptz(6)
+  utilisateur     utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onUpdate: NoAction, map: "fk_rapport_1")
+
+  @@index([id_utilisateur, date_generation(sort: Desc)], map: "idx_rapport_user_date")
+  @@schema("construct")
+}
+
+model role {
+  id_role         BigInt            @id(map: "pk_role") @default(autoincrement())
+  nom_role        String            @unique(map: "uq_role_nom_role") @db.VarChar(50)
+  description     String?
+  role_permission role_permission[]
+  utilisateur     utilisateur[]
+
+  @@schema("construct")
+}
+
+model role_permission {
+  id_role       BigInt
+  id_permission BigInt
+  role          role       @relation(fields: [id_role], references: [id_role], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_permission_1")
+  permission    permission @relation(fields: [id_permission], references: [id_permission], onDelete: Cascade, onUpdate: NoAction, map: "fk_role_permission_2")
+
+  @@id([id_role, id_permission], map: "pk_role_permission")
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model session {
+  id_session        BigInt      @id(map: "pk_session") @default(autoincrement())
+  id_utilisateur    BigInt
+  token_hash        String      @unique(map: "uq_session_token_hash") @db.VarChar(255)
+  date_connexion    DateTime    @default(now()) @db.Timestamptz(6)
+  derniere_activite DateTime    @default(now()) @db.Timestamptz(6)
+  date_deconnexion  DateTime?   @db.Timestamptz(6)
+  statut            String      @default("ACTIVE") @db.VarChar(20)
+  utilisateur       utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade, onUpdate: NoAction, map: "fk_session_1")
+
+  @@index([id_utilisateur, statut], map: "idx_session_user_statut")
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model tache {
+  id_tache         BigInt             @id(map: "pk_tache") @default(autoincrement())
+  id_projet        BigInt
+  id_responsable   BigInt
+  id_equipe        BigInt
+  titre            String             @db.VarChar(150)
+  description      String?
+  priorite         String             @default("NORMALE") @db.VarChar(20)
+  etat             String             @default("A_FAIRE") @db.VarChar(20)
+  temps_estime     Decimal            @default(0) @db.Decimal(8, 2)
+  date_creation    DateTime           @default(now()) @db.Timestamptz(6)
+  date_debut       DateTime?          @db.Date
+  date_limite      DateTime?          @db.Date
+  date_terminaison DateTime?          @db.Timestamptz(6)
+  activite         activite[]
+  commentaire      commentaire[]
+  historique_tache historique_tache[]
+  piece_jointe     piece_jointe[]
+  projet           projet             @relation(fields: [id_projet], references: [id_projet], onDelete: Cascade, onUpdate: NoAction, map: "fk_tache_1")
+  utilisateur      utilisateur        @relation(fields: [id_responsable], references: [id_utilisateur], onUpdate: NoAction, map: "fk_tache_2")
+  equipe           equipe             @relation(fields: [id_equipe], references: [id_equipe], onUpdate: NoAction, map: "fk_tache_3")
+  transfert_tache  transfert_tache[]
+
+  @@index([id_equipe], map: "idx_tache_equipe")
+  @@index([id_projet, etat], map: "idx_tache_projet_etat")
+  @@index([id_responsable, etat], map: "idx_tache_responsable_etat")
+  @@index([date_limite], map: "idx_tache_retard", where: raw("((etat)::text <> 'TERMINE'::text)"))
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model transfert_tache {
+  id_transfert                                                   BigInt      @id(map: "pk_transfert_tache") @default(autoincrement())
+  id_tache                                                       BigInt
+  ancien_responsable                                             BigInt
+  nouveau_responsable                                            BigInt
+  ancienne_equipe                                                BigInt
+  nouvelle_equipe                                                BigInt
+  utilisateur_transfert                                          BigInt
+  motif                                                          String
+  date_transfert                                                 DateTime    @default(now()) @db.Timestamptz(6)
+  tache                                                          tache       @relation(fields: [id_tache], references: [id_tache], onDelete: Cascade, onUpdate: NoAction, map: "fk_transfert_tache_1")
+  utilisateur_transfert_tache_ancien_responsableToutilisateur    utilisateur @relation("transfert_tache_ancien_responsableToutilisateur", fields: [ancien_responsable], references: [id_utilisateur], onUpdate: NoAction, map: "fk_transfert_tache_2")
+  utilisateur_transfert_tache_nouveau_responsableToutilisateur   utilisateur @relation("transfert_tache_nouveau_responsableToutilisateur", fields: [nouveau_responsable], references: [id_utilisateur], onUpdate: NoAction, map: "fk_transfert_tache_3")
+  equipe_transfert_tache_ancienne_equipeToequipe                 equipe      @relation("transfert_tache_ancienne_equipeToequipe", fields: [ancienne_equipe], references: [id_equipe], onUpdate: NoAction, map: "fk_transfert_tache_4")
+  equipe_transfert_tache_nouvelle_equipeToequipe                 equipe      @relation("transfert_tache_nouvelle_equipeToequipe", fields: [nouvelle_equipe], references: [id_equipe], onUpdate: NoAction, map: "fk_transfert_tache_5")
+  utilisateur_transfert_tache_utilisateur_transfertToutilisateur utilisateur @relation("transfert_tache_utilisateur_transfertToutilisateur", fields: [utilisateur_transfert], references: [id_utilisateur], onUpdate: NoAction, map: "fk_transfert_tache_6")
+
+  @@index([id_tache, date_transfert], map: "idx_transfert_tache_date")
+  @@schema("construct")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model utilisateur {
+  id_utilisateur                                                     BigInt                 @id(map: "pk_utilisateur") @default(autoincrement())
+  id_entreprise                                                      BigInt
+  id_role                                                            BigInt
+  id_equipe                                                          BigInt
+  nom                                                                String                 @db.VarChar(100)
+  prenom                                                             String                 @db.VarChar(100)
+  email                                                              String                 @unique(map: "uq_utilisateur_email") @db.VarChar(150)
+  mot_de_passe                                                       String                 @db.VarChar(255)
+  telephone                                                          String?                @db.VarChar(30)
+  poste                                                              String?                @db.VarChar(100)
+  theme                                                              String                 @default("clair") @db.VarChar(10)
+  statut                                                             String                 @default("ACTIF") @db.VarChar(20)
+  capacite_hebdomadaire_heures                                       Decimal                @default(40) @db.Decimal(5, 2)
+  tentatives_echec                                                   Int                    @default(0)
+  verrouille_jusqu_a                                                 DateTime?              @db.Timestamptz(6)
+  date_creation                                                      DateTime               @default(now()) @db.Timestamptz(6)
+  date_modification                                                  DateTime               @default(now()) @db.Timestamptz(6)
+  activite                                                           activite[]
+  commentaire                                                        commentaire[]
+  historique_tache                                                   historique_tache[]
+  notification                                                       notification[]
+  participation_projet                                               participation_projet[]
+  piece_jointe                                                       piece_jointe[]
+  projet                                                             projet[]
+  rapport                                                            rapport[]
+  session                                                            session[]
+  tache                                                              tache[]
+  transfert_tache_transfert_tache_ancien_responsableToutilisateur    transfert_tache[]      @relation("transfert_tache_ancien_responsableToutilisateur")
+  transfert_tache_transfert_tache_nouveau_responsableToutilisateur   transfert_tache[]      @relation("transfert_tache_nouveau_responsableToutilisateur")
+  transfert_tache_transfert_tache_utilisateur_transfertToutilisateur transfert_tache[]      @relation("transfert_tache_utilisateur_transfertToutilisateur")
+  entreprise                                                         entreprise             @relation(fields: [id_entreprise], references: [id_entreprise], onUpdate: NoAction, map: "fk_utilisateur_1")
+  role                                                               role                   @relation(fields: [id_role], references: [id_role], onUpdate: NoAction, map: "fk_utilisateur_2")
+  equipe                                                             equipe                 @relation(fields: [id_equipe], references: [id_equipe], onUpdate: NoAction, map: "fk_utilisateur_3")
+
+  @@index([id_equipe], map: "idx_utilisateur_equipe")
+  @@index([id_role], map: "idx_utilisateur_role")
+  @@schema("construct")
+}

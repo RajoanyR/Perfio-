@@ -1,0 +1,40 @@
+
+services:
+  postgres:
+    image: postgres:18
+    container_name: opqual-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: opqual
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD dans le fichier .env}
+    volumes:
+      - opqual_data:/var/lib/postgresql
+
+  backend:
+    build:
+      context: ./backend
+    container_name: opqual-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/opqual?schema=construct
+      FRONTEND_URL: http://localhost,http://localhost:5173
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: opqual-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  opqual_data:
